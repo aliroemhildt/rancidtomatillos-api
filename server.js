@@ -13,9 +13,10 @@ app.locals = {
 }
 
 app.get('/api/v1/ratings/:id', (request, response) => {
+  const { ratings } = app.locals
   const { id } = request.params;
-
-  let requestedRating = ratings.find(rating => rating.id === parseInt(id));
+  console.log(app.locals)
+  let requestedRating = ratings.find(item => item.id === parseInt(id));
 
   if(!requestedRating) {
     return response.status(404).json({
@@ -27,12 +28,13 @@ app.get('/api/v1/ratings/:id', (request, response) => {
 });
 
 app.get('/api/v1/ratings', (request, response) => {
-  const ratings = app.locals.ratings;
+  const { ratings } = app.locals;
   response.json({ ratings });
 });
 
 app.post('/api/v1/ratings', (request, response) => {
   const { user_id, movie_id, rating } = request.body;
+  const { ratings } = app.locals;
   const existingRating = ratings.find(item => {
     return item.user_id === user_id && item.movie_id === movie_id;
   });
@@ -50,6 +52,12 @@ app.post('/api/v1/ratings', (request, response) => {
   }
 
   if (existingRating) {
+    if (existingRating.rating === rating) {
+      return response.status(422).json({
+        message: 'This rating already exists.'
+      });
+    }
+
     ratings.forEach(item => {
       if (item.id === existingRating.id) {
         item.rating = rating
@@ -65,6 +73,28 @@ app.post('/api/v1/ratings', (request, response) => {
   app.locals.ratings.push({ id, user_id, movie_id, rating });
   response.status(201).json({ id, user_id, movie_id, rating });
 })
+
+app.delete('/api/v1/ratings/:id', (request, response) => {
+  const { id } = request.params;
+  const { ratings } = app.locals;
+
+  const ratingToDelete = ratings.find(item => item.id === parseInt(id));
+
+  if (!ratingToDelete) {
+    return response.status(404).json({
+      message: `No rating found with an id of ${id}.`
+    });
+  }
+  console.log('ratings: ', ratings)
+  console.log('locals before: ', app.locals.ratings)
+  console.log(app.locals)
+  updatedRatings = ratings.filter(rating => rating.id !== parseInt(id));
+  app.locals.ratings = updatedRatings
+  console.log('locals after: ', app.locals.ratings)
+  response.status(200).json({
+    message: `Rating ${id} has been deleted.`
+  });
+});
 
 app.listen(app.get('port'), () => {
   console.log(`${app.locals.title} is running on http://localhost:${app.get('port')}.`);
