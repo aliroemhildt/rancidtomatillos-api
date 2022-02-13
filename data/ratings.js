@@ -1,5 +1,5 @@
-module.exports = {
-  "ratings": [
+module.exports =
+  [
     {
       id: 1,
       user_id: 1,
@@ -7,4 +7,3 @@ module.exports = {
       rating: 6,
     }
   ]
-}
