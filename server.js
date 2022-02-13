@@ -1,8 +1,11 @@
 const express = require('express');
+const bodyParser = require('body-parser');
 const app = express();
 const ratings = require('./data/ratings');
 
 app.set('port', process.env.PORT || 7000);
+
+app.use(bodyParser.json());
 
 app.locals = {
   title: 'Rancid Tomatillo ratings API',
@@ -29,30 +32,38 @@ app.get('/api/v1/ratings', (request, response) => {
 });
 
 app.post('/api/v1/ratings', (request, response) => {
-  const id = Date.now();
   const { user_id, movie_id, rating } = request.body;
-  const requiredProperties = ['user_id', 'movie_id', 'rating'];
-  // do a bunch of checks before pushing
-  // see if there is an existing match for user id and movie idea
-  // if yes: update the existing rating object with the new rating number
-  // if no: push a new rating into locals.ratings
-  for (let property of requiredProperties) {
-    if(!property || typeof property !== 'number') {
-      return response.status(422).json({
-        message: 'You are missing a required parameter'
-      })
-    }
-  }
-  if (!user_id || !movie_id || !rating || user) {
+  const existingRating = ratings.find(item => {
+    return item.user_id === user_id && item.movie_id === movie_id;
+  });
+
+  if (!user_id || !movie_id || !rating) {
     return response.status(422).json({
-      message: 'You are missing a required parameter'
-    })
+      message: 'You are missing a required parameter.'
+    });
   }
+
+  if (typeof user_id !== 'number' || typeof movie_id !== 'number' || typeof rating !== 'number') {
+    return response.status(422).json({
+      message: 'Invalid data type. All parameters must be numbers.'
+    });
+  }
+
+  if (existingRating) {
+    ratings.forEach(item => {
+      if (item.id === existingRating.id) {
+        item.rating = rating
+      }
+    });
+
+    return response.status(201).json({
+      message: `rating ${existingRating.id} has been updated.`
+    });
+  }
+
+  const id = Date.now();
   app.locals.ratings.push({ id, user_id, movie_id, rating });
-
-  // probably need a response for an error???
-
-  response.status(201).json({ id, user_id, movie_id, rating })
+  response.status(201).json({ id, user_id, movie_id, rating });
 })
 
 app.listen(app.get('port'), () => {
