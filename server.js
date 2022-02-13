@@ -11,7 +11,14 @@ app.set('port', process.env.PORT || 8000);
 
 app.locals = {
   title: 'Rancid Tomatillo ratings API',
-  ratings: []
+  ratings: [
+    {
+      "id": 3503,
+      "user_id": 77,
+      "movie_id": 694919,
+      "rating": 10,
+    }
+  ]
 }
 
 app.get('/api/v1/ratings/:id', (request, response) => {
