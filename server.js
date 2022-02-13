@@ -1,22 +1,20 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
-const ratings = require('./data/ratings');
 
-app.set('port', process.env.PORT || 7000);
+app.set('port', process.env.PORT || 8000);
 
 app.use(bodyParser.json());
 
 app.locals = {
   title: 'Rancid Tomatillo ratings API',
-  ratings
+  ratings: []
 }
 
 app.get('/api/v1/ratings/:id', (request, response) => {
   const { ratings } = app.locals
   const { id } = request.params;
-  console.log(app.locals)
-  let requestedRating = ratings.find(item => item.id === parseInt(id));
+  const requestedRating = ratings.find(item => item.id === parseInt(id));
 
   if(!requestedRating) {
     return response.status(404).json({
@@ -29,6 +27,7 @@ app.get('/api/v1/ratings/:id', (request, response) => {
 
 app.get('/api/v1/ratings', (request, response) => {
   const { ratings } = app.locals;
+
   response.json({ ratings });
 });
 
@@ -77,7 +76,6 @@ app.post('/api/v1/ratings', (request, response) => {
 app.delete('/api/v1/ratings/:id', (request, response) => {
   const { id } = request.params;
   const { ratings } = app.locals;
-
   const ratingToDelete = ratings.find(item => item.id === parseInt(id));
 
   if (!ratingToDelete) {
@@ -85,17 +83,16 @@ app.delete('/api/v1/ratings/:id', (request, response) => {
       message: `No rating found with an id of ${id}.`
     });
   }
-  console.log('ratings: ', ratings)
-  console.log('locals before: ', app.locals.ratings)
-  console.log(app.locals)
+
   updatedRatings = ratings.filter(rating => rating.id !== parseInt(id));
-  app.locals.ratings = updatedRatings
-  console.log('locals after: ', app.locals.ratings)
+
+  app.locals.ratings = updatedRatings;
+
   response.status(200).json({
     message: `Rating ${id} has been deleted.`
   });
 });
 
 app.listen(app.get('port'), () => {
-  console.log(`${app.locals.title} is running on http://localhost:${app.get('port')}.`);
+  console.log('Server started successfully');
 });
