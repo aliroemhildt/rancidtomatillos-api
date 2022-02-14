@@ -13,10 +13,46 @@ app.locals = {
   title: 'Rancid Tomatillo ratings API',
   ratings: [
     {
-      "id": 3503,
+      "id": 1,
       "user_id": 77,
       "movie_id": 694919,
-      "rating": 10,
+      "rating": 10
+    },
+    {
+      "id": 2,
+      "user_id": "80",
+      "movie_id": "508439",
+      "rating": '6'
+    },
+    {
+      "id": 3,
+      "user_id": 80,
+      "movie_id": 718444,
+      "rating": 1
+    },
+    {
+      "id": 4,
+      "user_id": 77,
+      "movie_id": 539885,
+      "rating": 3
+    },
+    {
+      "id": 5,
+      "user_id": 80,
+      "movie_id": 581392,
+      "rating": 10
+    },
+    {
+      "id": 6,
+      "user_id": 77,
+      "movie_id": 726739,
+      "rating": 7
+    },
+    {
+      "id": 7,
+      "user_id": 80,
+      "movie_id": 627290,
+      "rating": 8
     }
   ]
 }
