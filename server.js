@@ -20,9 +20,9 @@ app.locals = {
     },
     {
       "id": 2,
-      "user_id": "80",
-      "movie_id": "508439",
-      "rating": '6'
+      "user_id": 80,
+      "movie_id": 508439,
+      "rating": 6
     },
     {
       "id": 3,
