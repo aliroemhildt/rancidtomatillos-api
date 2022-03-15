@@ -4,7 +4,7 @@
 
 A RESTful API created to accompany the [Rancid Tomatillos UI](https://github.com/aliroemhildt/rancidtomatillos). This server is written in JavaScript using Express and Node.js. When a user is logged in to the Rancid Tomatillos app, they are able to add a rating to a movie, and the user id, movie id, rating number, and a unique rating id are stored in this API. A few sample data points have been hard-coded into this server. 
 
-View the Heroku deployment [here](https://chart-toppers-api.herokuapp.com/api/v1/songs)
+View the Heroku deployment [here](https://user-ratings-api.herokuapp.com/api/v1/ratings)
 
 ## Set Up
 
