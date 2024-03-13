@@ -2,10 +2,10 @@
   "name": "user-ratings-api",
   "version": "1.0.0",
   "description": "",
-  "main": "server.js",
+  "main": "./functions/api.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "node ./functions/api.js"
   },
   "repository": {
     "type": "git",
@@ -17,6 +17,9 @@
   "dependencies": {
     "body-parser": "^1.19.1",
     "cors": "^2.8.5",
-    "express": "^4.17.2"
+    "express": "^4.17.2",
+    "netlify-cli": "^17.19.2",
+    "netlify-lambda": "^2.0.16",
+    "serverless-http": "^3.2.0"
   }
 }
